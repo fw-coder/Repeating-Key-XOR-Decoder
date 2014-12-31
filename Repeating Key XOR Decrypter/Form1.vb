@@ -1,11 +1,19 @@
 ﻿Public Class Form1
 
     Private Sub Button3_Click(sender As System.Object, e As System.EventArgs) Handles Button3.Click
-        Dim txt1 As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(TextBox3.Text)
-        Dim txt2 As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(TextBox4.Text)
-        Dim btxt1 As String() = New String(txt1.Length - 1) {}
+        
+
+        TextBox5.Text = HammingDistance(TextBox3.Text, TextBox4.Text).ToString ' write hamming distance to result box
+
+
+    End Sub
+
+    Private Function HammingDistance(inTxt1 As String, inTxt2 As String) As Integer
+        Dim txt1 As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(inTxt1) ' Convert inputted strings into hex byte arrays
+        Dim txt2 As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(inTxt2)
+        Dim btxt1 As String() = New String(txt1.Length - 1) {}  ' Set up empty arrays to hold binary versions of hex byte arrays
         Dim btxt2 As String() = New String(txt2.Length - 1) {}
-        Dim txtPosition1 As Long = 0
+        Dim txtPosition1 As Long = 0  ' Set up index values to use for conversion from hex to binary
         Dim txtPosition2 As Long = 0
 
         ' Converting byte arrays to binary arrays
@@ -23,18 +31,16 @@
         Next
 
         ' Calculating hamming distance between values in input boxes by
-        ' performing XOR bit by bit and summing the 1's (different bits) in hamDist
-        Dim hamDist As Integer = 0
+        ' performing XOR bit by bit and summing the 1's (different bits) in HammingDistance
+        HammingDistance = 0 ' Initializing HammingDistance to zero
         For i = 0 To btxt1.Length - 1                                   ' loop through each byte in the array,
             For j As Integer = 0 To 7                                   ' and loop through each bit in the byte
                 Dim currentBit1 As String = btxt1(i).Substring(j, 1)
                 Dim currentBit2 As String = btxt2(i).Substring(j, 1)
-                If Not currentBit1 = currentBit2 Then hamDist = hamDist + 1
+                If Not currentBit1 = currentBit2 Then HammingDistance = HammingDistance + 1
             Next
         Next
 
-        TextBox5.Text = hamDist.ToString ' write hamming distance to result box
+    End Function
 
-
-    End Sub
 End Class
