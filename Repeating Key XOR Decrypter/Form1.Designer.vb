@@ -34,6 +34,8 @@ Partial Class Form1
         Me.Button3 = New System.Windows.Forms.Button()
         Me.TextBox5 = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.TextBox6 = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'OpenFileDialog1
@@ -79,18 +81,18 @@ Partial Class Form1
         'TextBox2
         '
         Me.TextBox2.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox2.Location = New System.Drawing.Point(12, 112)
+        Me.TextBox2.Location = New System.Drawing.Point(12, 238)
         Me.TextBox2.Multiline = True
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TextBox2.Size = New System.Drawing.Size(682, 292)
+        Me.TextBox2.Size = New System.Drawing.Size(682, 161)
         Me.TextBox2.TabIndex = 4
         '
         'Label2
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(12, 96)
+        Me.Label2.Location = New System.Drawing.Point(12, 220)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(59, 15)
         Me.Label2.TabIndex = 5
@@ -137,11 +139,33 @@ Partial Class Form1
         Me.Label3.TabIndex = 10
         Me.Label3.Text = "Result:"
         '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Location = New System.Drawing.Point(12, 97)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(95, 15)
+        Me.Label4.TabIndex = 12
+        Me.Label4.Text = "File Contents:"
+        '
+        'TextBox6
+        '
+        Me.TextBox6.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox6.Location = New System.Drawing.Point(12, 115)
+        Me.TextBox6.Multiline = True
+        Me.TextBox6.Name = "TextBox6"
+        Me.TextBox6.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TextBox6.Size = New System.Drawing.Size(682, 102)
+        Me.TextBox6.TabIndex = 13
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(706, 411)
+        Me.Controls.Add(Me.TextBox6)
+        Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.TextBox5)
         Me.Controls.Add(Me.Button3)
@@ -171,5 +195,7 @@ Partial Class Form1
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents TextBox5 As System.Windows.Forms.TextBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents TextBox6 As System.Windows.Forms.TextBox
 
 End Class

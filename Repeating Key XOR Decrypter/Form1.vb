@@ -1,11 +1,7 @@
 ﻿Public Class Form1
 
     Private Sub Button3_Click(sender As System.Object, e As System.EventArgs) Handles Button3.Click
-        
-
-        TextBox5.Text = HammingDistance(TextBox3.Text, TextBox4.Text).ToString ' write hamming distance to result box
-
-
+        ''TextBox5.Text = HammingDistance(TextBox3.Text, TextBox4.Text).ToString ' write hamming distance to result box
     End Sub
 
     Private Function HammingDistance(inTxt1 As String, inTxt2 As String) As Integer
@@ -43,4 +39,36 @@
 
     End Function
 
+    Private Sub OpenFileDialog1_FileOk(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
+        Dim strm As System.IO.Stream
+
+        strm = OpenFileDialog1.OpenFile()
+
+        TextBox1.Text = OpenFileDialog1.FileName.ToString()
+
+        If Not (strm Is Nothing) Then
+            'insert code to read the file data
+            strm.Close()
+        End If
+
+        ' Import strings from text file
+        Dim R As New IO.StreamReader(OpenFileDialog1.FileName)
+        Dim str As String = R.ReadToEnd() ' Delimiter is vbLF (LineFeed)
+        TextBox6.Text = str ' Put the strings from the imported file into the list box
+        R.Close()
+
+    End Sub
+
+    Private Sub Button1_Click(sender As System.Object, e As System.EventArgs) Handles Button1.Click
+        OpenFileDialog1.Title = "Please Select a File"
+        OpenFileDialog1.InitialDirectory = "C:temp"
+        OpenFileDialog1.ShowDialog()
+    End Sub
+
+    Private Sub Button2_Click(sender As System.Object, e As System.EventArgs) Handles Button2.Click
+        For lengthGuess As Integer = 2 To 40
+            TextBox2.Text = TextBox2.Text & "L=" & lengthGuess & ": " & HammingDistance(TextBox6.Text.Substring(0, lengthGuess), TextBox6.Text.Substring(lengthGuess, lengthGuess)) & Environment.NewLine
+        Next
+
+    End Sub
 End Class
