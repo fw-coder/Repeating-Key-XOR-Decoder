@@ -21,29 +21,19 @@
             End While
         Next
 
-        '' resultBin = bin1 XOR testByte each possible hex value 00 thru ff
-        'Dim resultBin As String = String.Empty
+        ' hamDist = sum of 1's in txt1 XOR txt2
+        Dim hamDist As Integer = 0
 
+        'Performing XOR bit by bit and summing the 1's (different bits)
+        For i = 0 To btxt1.Length - 1
+            For j As Integer = 0 To 7
+                Dim currentBit1 As String = btxt1(i).Substring(j, 1)
+                Dim currentBit2 As String = btxt2(i).Substring(j, 1)
+                If Not currentBit1 = currentBit2 Then hamDist = hamDist + 1
+            Next
+        Next
 
-        ''Performing XOR
-        ''Doing first bit out of the loop to initialize resultBin
-        'If bin1.Substring(0, 1) = testByte.Substring(0, 1) Then
-        '    resultBin = "0"
-        'Else
-        '    resultBin = "1"
-        'End If
-        ''Now doing the rest of the 8 bits
-        'For j As Integer = 1 To 7
-        '    Dim currentBit1 As String = bin1.Substring(j, 1)
-        '    Dim currentBit2 As String = testByte.Substring(j, 1)
-
-        '    If currentBit1 = currentBit2 Then
-        '        resultBin = resultBin & "0"
-        '    Else
-        '        resultBin = resultBin & "1"
-        '    End If
-        'Next
-
+        TextBox5.Text = hamDist.ToString ' write hamming distance to result box
 
 
     End Sub
