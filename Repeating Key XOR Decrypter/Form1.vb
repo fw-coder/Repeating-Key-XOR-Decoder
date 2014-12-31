@@ -8,6 +8,7 @@
         Dim txtPosition1 As Long = 0
         Dim txtPosition2 As Long = 0
 
+        ' Converting byte arrays to binary arrays
         For txtPosition1 = 0 To txt1.Length - 1
             btxt1(txtPosition1) = Convert.ToString(txt1(txtPosition1), 2) 'conv value to binary
             While btxt1(txtPosition1).Length < 8
@@ -21,12 +22,11 @@
             End While
         Next
 
-        ' hamDist = sum of 1's in txt1 XOR txt2
+        ' Calculating hamming distance between values in input boxes by
+        ' performing XOR bit by bit and summing the 1's (different bits) in hamDist
         Dim hamDist As Integer = 0
-
-        'Performing XOR bit by bit and summing the 1's (different bits)
-        For i = 0 To btxt1.Length - 1
-            For j As Integer = 0 To 7
+        For i = 0 To btxt1.Length - 1                                   ' loop through each byte in the array,
+            For j As Integer = 0 To 7                                   ' and loop through each bit in the byte
                 Dim currentBit1 As String = btxt1(i).Substring(j, 1)
                 Dim currentBit2 As String = btxt2(i).Substring(j, 1)
                 If Not currentBit1 = currentBit2 Then hamDist = hamDist + 1
