@@ -66,9 +66,28 @@
     End Sub
 
     Private Sub Button2_Click(sender As System.Object, e As System.EventArgs) Handles Button2.Click
+        Dim bestLengthGuess1 As Integer = 0
+        Dim bestLengthGuess2 As Integer = 0
+        Dim bestLengthGuess3 As Integer = 0
+        Dim shortestNormalizedDistance1 As Integer = 9999
+        Dim shortestNormalizedDistance2 As Integer = 9999
+        Dim shortestNormalizedDistance3 As Integer = 9999
+
+        ' Find the three keysizes with the shortest hamming distances and write them to textBox2
         For lengthGuess As Integer = 2 To 40
-            TextBox2.Text = TextBox2.Text & "L=" & lengthGuess & ": " & HammingDistance(TextBox6.Text.Substring(0, lengthGuess), TextBox6.Text.Substring(lengthGuess, lengthGuess)) & Environment.NewLine
+            Dim NormalizedHammingDistance As Integer = HammingDistance(TextBox6.Text.Substring(0, lengthGuess), TextBox6.Text.Substring(lengthGuess, lengthGuess)) / lengthGuess
+            If NormalizedHammingDistance < shortestNormalizedDistance1 Then
+                bestLengthGuess1 = lengthGuess
+                shortestNormalizedDistance1 = NormalizedHammingDistance
+            ElseIf NormalizedHammingDistance < shortestNormalizedDistance2 Then
+                bestLengthGuess2 = lengthGuess
+                shortestNormalizedDistance2 = NormalizedHammingDistance
+            ElseIf NormalizedHammingDistance < shortestNormalizedDistance3 Then
+                bestLengthGuess3 = lengthGuess
+                shortestNormalizedDistance3 = NormalizedHammingDistance
+            End If
         Next
+        TextBox2.Text = "L1=" & bestLengthGuess1 & " (" & shortestNormalizedDistance1 & ")" & Environment.NewLine & "L2=" & bestLengthGuess2 & " (" & shortestNormalizedDistance2 & ")" & Environment.NewLine & "L3=" & bestLengthGuess3 & " (" & shortestNormalizedDistance3 & ")" & Environment.NewLine
 
     End Sub
 End Class
