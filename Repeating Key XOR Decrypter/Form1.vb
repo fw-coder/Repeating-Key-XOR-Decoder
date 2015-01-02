@@ -98,6 +98,63 @@
    
     
     Private Sub Button4_Click(sender As System.Object, e As System.EventArgs) Handles Button4.Click
+        ' Grab text to decrypt
+        Dim cipher As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(TextBox6.Text) ' Convert inputted string into hex byte array
+
+        ' Grab keysize
+        Dim keysize As Integer = TextBox7.Text
+
+        ' 2-D array tutorial: http://www.homeandlearn.co.uk/NET/nets6p5.html
+        'a0,0 = block 0, char 0 byte 1
+        'a0,1 = block 0, char 1 byte 2      for string with 15 bytes, keysize of 5
+        'a0,2 = block 0, char 2 byte 3      array = a(#bytes/keysize = 15/5 = 3, keysize = 5)
+        'a0,3 = block 0, char 3 byte 4
+        'a0,4 = block 0, char 4 byte 5 (note that 4, not 5, = index value to set up 2nd dimension of array)
+        'a1,0 = block 1, char 0 byte 6
+        'a1,1 = block 1, char 1 byte 7
+        'a1,2 = block 1, char 2 byte 8
+        'a1,3 = block 1, char 3 byte 9
+        'a1,4 = block 1, char 4 byte 10
+        'a2,0 = block 2, char 0 byte 11
+        'a2,1 = block 2, char 1 byte 12
+        'a2,2 = block 2, char 2 byte 13
+        'a2,3 = block 2, char 3 byte 14
+        'a2,4 = block 2, char 4 byte 15
+        Dim arrayRow As Integer = (cipher.Length / keysize) - 1 ' 0 to several hundred; each block of cipher on separate row
+        Dim arrayCol As Integer = keysize - 1                   ' 0 to keysize (minus 1); each column of bytes in block of cipher
+
+        Dim cipherBlocks(,) As Byte = New Byte(arrayRow, arrayCol) {}
+        Dim counter As Integer = 0
+        ' keep a counter going while creating 2d array & if counter >= #items in cipher, then stop or add empty values
+        ' Break text into blocks of size = keysize
+        For r As Integer = 0 To arrayRow
+            For c As Integer = 0 To arrayCol
+                cipherBlocks(r, c) = cipher(counter)
+                counter = counter + 1
+                If counter >= cipher.Length - 1 Then Exit For
+            Next
+        Next
+
+        ' Transpose those blocks: block1 = 1st byte of each block, block2 = 2nd byte, etc.
+        Dim cipherBlocksTrans(,) As Byte = New Byte(arrayCol, arrayRow) {}
+        Dim counter2 As Integer = 0
+        For r2 As Integer = 0 To arrayCol
+            For c2 As Integer = 0 To arrayRow
+                cipherBlocksTrans(r2, c2) = cipherBlocks(c2, r2) ' ****counter shouldnt be in there
+                If counter2 >= cipher.Length - 1 Then Exit For
+            Next
+        Next
+
+
+        ' Solve each transposed block using single-byte XOR using bytes 00-FF and find byte for each block
+        '     that gives best result
+        ' Put single byte solutions together to make the key
+        ' Use the key to decrypt original text using repeating-text XOR 
+
+        Dim dummy As Integer = 0
+
+
+
         ' Getting repeating key and text to encrypt
         'Dim key As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(TextBox1.Text)
         'Dim txt As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(RichTextBox1.Text)
