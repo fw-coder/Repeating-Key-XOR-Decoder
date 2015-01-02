@@ -66,6 +66,7 @@
     End Sub
 
     Private Sub Button2_Click(sender As System.Object, e As System.EventArgs) Handles Button2.Click
+        ' Probably would be better with a multi-dimensional array, but oh well \o/
         Dim bestLengthGuess1 As Integer = 0
         Dim bestLengthGuess2 As Integer = 0
         Dim bestLengthGuess3 As Integer = 0
@@ -87,7 +88,41 @@
                 shortestNormalizedDistance3 = NormalizedHammingDistance
             End If
         Next
-        TextBox2.Text = "L1=" & bestLengthGuess1 & " (" & shortestNormalizedDistance1 & ")" & Environment.NewLine & "L2=" & bestLengthGuess2 & " (" & shortestNormalizedDistance2 & ")" & Environment.NewLine & "L3=" & bestLengthGuess3 & " (" & shortestNormalizedDistance3 & ")" & Environment.NewLine
+        TextBox2.Text = _
+            "L1=" & bestLengthGuess1 & " (" & shortestNormalizedDistance1 & ")" & Environment.NewLine & _
+            "L2=" & bestLengthGuess2 & " (" & shortestNormalizedDistance2 & ")" & Environment.NewLine & _
+            "L3=" & bestLengthGuess3 & " (" & shortestNormalizedDistance3 & ")" & Environment.NewLine
+
+    End Sub
+
+   
+    
+    Private Sub Button4_Click(sender As System.Object, e As System.EventArgs) Handles Button4.Click
+        ' Getting repeating key and text to encrypt
+        'Dim key As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(TextBox1.Text)
+        'Dim txt As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(RichTextBox1.Text)
+        'Dim counter As Integer = 0
+
+        'For i As Integer = 0 To txt.Length - 1 Step 3
+        '    For j As Integer = 0 To key.Length - 1
+        '        Dim out As Byte = txt(counter) Xor key(j)
+        '        If counter = 0 And out < &H10 Then
+        '            TextBox3.Text = TextBox3.Text & "0" & Convert.ToString(out, 16) 'add leading 0 to first byte
+        '        Else
+        '            TextBox3.Text = TextBox3.Text & Convert.ToString(out, 16)
+        '        End If
+        '        counter = counter + 1
+        '        If counter = txt.Length Then Exit For
+        '    Next
+        'Next
+    End Sub
+
+    Private Sub HelpToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles HelpToolStripMenuItem.Click
+        MessageBox.Show("Instructions:" & Environment.NewLine & "1. Select file containing ascii to decode." & _
+                        Environment.NewLine & "2. Click button to find likely keysizes" & _
+                        Environment.NewLine & "3. Type a keysize in the keysize box to use for decyrption" & _
+                        Environment.NewLine & "4. Click the decrypt button" & _
+                        Environment.NewLine & "5. If decrypted text looks wrong, pick another keysize and try again")
 
     End Sub
 End Class
