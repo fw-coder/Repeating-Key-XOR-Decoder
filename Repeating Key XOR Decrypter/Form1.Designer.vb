@@ -93,7 +93,7 @@ Partial Class Form1
         Me.TextBox2.Multiline = True
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TextBox2.Size = New System.Drawing.Size(678, 79)
+        Me.TextBox2.Size = New System.Drawing.Size(678, 66)
         Me.TextBox2.TabIndex = 4
         '
         'Label2
@@ -169,7 +169,7 @@ Partial Class Form1
         '
         'TextBox7
         '
-        Me.TextBox7.Location = New System.Drawing.Point(209, 351)
+        Me.TextBox7.Location = New System.Drawing.Point(209, 336)
         Me.TextBox7.Name = "TextBox7"
         Me.TextBox7.Size = New System.Drawing.Size(68, 20)
         Me.TextBox7.TabIndex = 14
@@ -177,7 +177,7 @@ Partial Class Form1
         'Button4
         '
         Me.Button4.BackColor = System.Drawing.Color.Lime
-        Me.Button4.Location = New System.Drawing.Point(310, 350)
+        Me.Button4.Location = New System.Drawing.Point(310, 335)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(106, 23)
         Me.Button4.TabIndex = 15
@@ -188,7 +188,7 @@ Partial Class Form1
         '
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(12, 354)
+        Me.Label5.Location = New System.Drawing.Point(12, 339)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(194, 15)
         Me.Label5.TabIndex = 16
@@ -197,7 +197,7 @@ Partial Class Form1
         'TextBox8
         '
         Me.TextBox8.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox8.Location = New System.Drawing.Point(12, 397)
+        Me.TextBox8.Location = New System.Drawing.Point(12, 382)
         Me.TextBox8.Multiline = True
         Me.TextBox8.Name = "TextBox8"
         Me.TextBox8.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
@@ -208,11 +208,11 @@ Partial Class Form1
         '
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(12, 379)
+        Me.Label6.Location = New System.Drawing.Point(12, 364)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(95, 15)
+        Me.Label6.Size = New System.Drawing.Size(98, 15)
         Me.Label6.TabIndex = 17
-        Me.Label6.Text = "File Contents:"
+        Me.Label6.Text = "Possible keys:"
         '
         'MenuStrip1
         '

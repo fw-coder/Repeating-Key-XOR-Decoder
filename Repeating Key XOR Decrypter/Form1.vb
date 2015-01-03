@@ -105,6 +105,7 @@
         Dim keysize As Integer = TextBox7.Text
 
         ' 2-D array tutorial: http://www.homeandlearn.co.uk/NET/nets6p5.html
+        ' 2D array defines a grid of data of size (#rows, #columns)
         'a0,0 = block 0, char 0 byte 1
         'a0,1 = block 0, char 1 byte 2      for string with 15 bytes, keysize of 5
         'a0,2 = block 0, char 2 byte 3      array = a(#bytes/keysize = 15/5 = 3, keysize = 5)
@@ -140,7 +141,7 @@
         Dim counter2 As Integer = 0
         For r2 As Integer = 0 To arrayCol
             For c2 As Integer = 0 To arrayRow
-                cipherBlocksTrans(r2, c2) = cipherBlocks(c2, r2) ' ****counter shouldnt be in there
+                cipherBlocksTrans(r2, c2) = cipherBlocks(c2, r2)
                 If counter2 >= cipher.Length - 1 Then Exit For
             Next
         Next
@@ -148,10 +149,14 @@
 
         ' Solve each transposed block using single-byte XOR using bytes 00-FF and find byte for each block
         '     that gives best result
+
+        Dim result As String = singleByteXor(cipherBlocksTrans) ' not returning anything useful yet
+
+
         ' Put single byte solutions together to make the key
         ' Use the key to decrypt original text using repeating-text XOR 
 
-        Dim dummy As Integer = 0
+        Dim dummy As Integer = 0 ' just a place to put a break
 
 
 
@@ -182,4 +187,132 @@
                         Environment.NewLine & "5. If decrypted text looks wrong, pick another keysize and try again")
 
     End Sub
+
+    Private Function singleByteXor(cipher(,) As Byte) As String
+        ' Dim inputBytes As New List(Of String)()  ' this will be a list of bytes from the input textbox
+
+        Dim commonPairs() As String = {"TH", "EA", "OF", "TO", "IN", "IT", "IS", "BE", "AS", "AT", "SO", "WE", _
+                                       "HE", "BY", "OR", "ON", "DO", "IF", "ME", "MY", "UP", "SS", "EE", "TT", _
+                                       "FF", "LL", "MM", "OO"}
+        Dim commonTriplets() As String = {"THE", "EST", "FOR", "AND", "HIS", "ENT", "THA"}
+
+        ' Insert a leading 0 if there is an odd number of characters in the input byte string
+        ' Dim stringData1 As String = ListBox1.SelectedItem.ToString 'selected string in listbox
+        For row As Integer = 0 To cipher.GetLength(0) - 1
+
+            'Dim stringData1 As String = CStr(ListBox1.Items(l_index))
+            Dim topScore1 As Integer = 0
+            Dim topScore2 As Integer = 0
+            Dim topScore3 As Integer = 0
+            Dim topScoreResultString1 As String = String.Empty
+            Dim topScoreResultString2 As String = String.Empty
+            Dim topScoreResultString3 As String = String.Empty
+            Dim topScoreResultKey1 As Integer = 0
+            Dim topScoreResultKey2 As Integer = 0
+            Dim topScoreResultKey3 As Integer = 0
+
+            'If stringData1.Length Mod 2 = 1 Then
+            '    stringData1 = "0" & stringData1
+            'End If
+
+            'initializing textBox2
+            'TextBox3.Text = "Results:" & Environment.NewLine & Environment.NewLine
+
+            For t As Byte = &H0 To &HFF
+                Dim resultString As String = String.Empty ' use to hold string for frequency analysis
+                Dim skipFreqAnalysis As Integer = 0 ' set to 1 if string/key combo has bad characters so freq analysis will be skipped
+                Dim testByte As Byte = t ' we will xor this with each value in the current row
+
+                For col As Integer = 0 To cipher.GetLength(1) - 1
+                    '' Convert each pair of characters to a byte
+                    'Dim currentByte1 As String = stringData1.Substring(i, 2) ' currentByte is two hex values
+                    Dim value1 As Byte = cipher(row, col) 'value is hex byte
+                    Dim tempByte As Byte = value1 Xor testByte
+
+                    ' ************************************************************************************
+                    ' Experimenting with turbo-mode - exit loop if character is out of standard text range
+                    ' If tempByte < &H20 Or tempByte > &H7E Then
+                    If tempByte < &H0 Then
+                        skipFreqAnalysis = 1
+                        ' ******TextBox3.Text = TextBox3.Text & "**GARBAGE**"
+                        Exit For
+                    Else
+                        Dim com As String = ChrW(CInt(tempByte))
+
+                        ' build a string in resultString to use for freq analysis
+                        If tempByte = 0 Then
+                            resultString = resultString & " " ' if this is a null, add a space
+                        ElseIf tempByte = &H5E Or tempByte = &HD Or tempByte = &HA Then
+                            resultString = resultString & "~" ' if this is a ^ or a return, add a ~ so it doesn't mess up Excel delimiting
+                        Else
+                            resultString = resultString & com ' if it is not a null, add the character
+                        End If
+                    End If
+
+                Next
+
+                If skipFreqAnalysis = 0 Then
+                    ' Search for every instance of every common pair/triplet
+                    ' and update resultScore/topScore accordingly
+                    Dim lngPosition1 As Long
+                    Dim lngPosition2 As Long
+                    Dim resultScore As Integer = 0
+                    For lngPosition1 = LBound(commonPairs) To UBound(commonPairs)
+                        Dim position As Integer = 1
+                        Dim lastPosition As Integer = resultString.Length - 1
+                        Do
+                            Dim strFind As Integer = InStr(position, LCase$(resultString), LCase$(commonPairs(lngPosition1)))
+                            If strFind = 0 Then
+                                Exit Do
+                            Else
+                                resultScore = resultScore + 4
+                                position = position + 1
+                            End If
+                        Loop While position < lastPosition
+                    Next
+
+                    For lngPosition2 = LBound(commonTriplets) To UBound(commonTriplets)
+                        Dim position As Integer = 1
+                        Dim lastPosition As Integer = resultString.Length - 1
+                        Do
+                            Dim strFind As Integer = InStr(position, LCase$(resultString), LCase$(commonTriplets(lngPosition2)))
+                            If strFind = 0 Then
+                                Exit Do
+                            Else
+                                resultScore = resultScore + 5
+                                position = position + 1
+                            End If
+                        Loop While position < lastPosition
+                    Next
+
+                    If resultScore > topScore1 Then
+                        topScore1 = resultScore
+                        topScoreResultString1 = resultString
+                        topScoreResultKey1 = t
+                    ElseIf resultScore > topScore2 Then
+                        topScore2 = resultScore
+                        topScoreResultString2 = resultString
+                        topScoreResultKey2 = t
+                    ElseIf resultScore > topScore3 Then
+                        topScore3 = resultScore
+                        topScoreResultString3 = resultString
+                        topScoreResultKey3 = t
+                    End If
+
+                End If
+                If t = &HFF Then Exit For 'fix bug where system gives overflow after last loop where t is temporarily &hff+1
+            Next
+            If topScore1 > 0 Then TextBox8.Text = TextBox8.Text & Environment.NewLine & _
+                row & "^" & "code: " & "^" & topScoreResultString1 & "^" & " Key: " & "^" & topScoreResultKey1 & _
+                "^" & " Score: " & "^" & topScore1 & Environment.NewLine & _
+                row & "^" & "code: " & "^" & topScoreResultString2 & "^" & " Key: " & "^" & topScoreResultKey2 & _
+                "^" & " Score: " & "^" & topScore2 & Environment.NewLine & _
+                row & "^" & "code: " & "^" & topScoreResultString3 & "^" & " Key: " & "^" & topScoreResultKey3 & _
+                "^" & " Score: " & "^" & topScore3
+        Next
+
+        singleByteXor = "done" '******* change later to hand results back to main sub
+
+    End Function
+
 End Class
