@@ -60,47 +60,80 @@
         R.Close()
 
     End Sub
+    Private Sub OpenFileDialog2_FileOk(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog2.FileOk
+        Dim strm As System.IO.Stream
+
+        strm = OpenFileDialog2.OpenFile()
+
+        TextBox6.Text = OpenFileDialog2.FileName.ToString()
+
+        If Not (strm Is Nothing) Then
+            'insert code to read the file data
+            strm.Close()
+        End If
+
+        ' Import strings from text file
+        Dim R As New IO.StreamReader(OpenFileDialog2.FileName)
+        Dim str As String = R.ReadToEnd() ' Delimiter is vbLF (LineFeed)
+
+        cipherInput.fromB64File = System.Text.ASCIIEncoding.ASCII.GetBytes(str)
+
+        ' ******** convert cipherInput.fromB64File from base64 to hex bytes
+        cipherInput.fromFile = Convert.FromBase64String(str)
+
+
+        RichTextBox1.Text = str ' Put the strings from the imported file into the list box
+        R.Close()
+    End Sub
+
     Public Class cipherInput
 
         Public Shared fromFile() As Byte
+        Public Shared fromB64File() As Byte
 
     End Class
 
     Private Sub Button1_Click(sender As System.Object, e As System.EventArgs) Handles Button1.Click
-        OpenFileDialog1.Title = "Please Select a File"
+        OpenFileDialog1.Title = "Please Select a Hex File"
         OpenFileDialog1.InitialDirectory = "C:temp"
         OpenFileDialog1.ShowDialog()
     End Sub
 
+    Private Sub Button5_Click(sender As System.Object, e As System.EventArgs) Handles Button5.Click
+        OpenFileDialog2.Title = "Please Select a Base64 File"
+        OpenFileDialog2.InitialDirectory = "C:temp"
+        OpenFileDialog2.ShowDialog()
+    End Sub
+
     Private Sub Button2_Click(sender As System.Object, e As System.EventArgs) Handles Button2.Click
-        ' Probably would be better with a multi-dimensional array, but oh well \o/
-        Dim bestLengthGuess1 As Integer = 0
-        Dim bestLengthGuess2 As Integer = 0
-        Dim bestLengthGuess3 As Integer = 0
-        Dim shortestNormalizedDistance1 As Integer = 9999
-        Dim shortestNormalizedDistance2 As Integer = 9999
-        Dim shortestNormalizedDistance3 As Integer = 9999
+        Dim bestLengthGuess() As Integer = {0, 0, 0, 0, 0}
+        Dim shortestNormalizedDistance() As Integer = {9999, 9999, 9999, 9999, 9999}
         Dim cipherString As String = System.Text.ASCIIEncoding.ASCII.GetString(cipherInput.fromFile)
 
         ' Find the three keysizes with the shortest hamming distances and write them to textBox2
-        For lengthGuess As Integer = 2 To 8 'should be to 40
+        For lengthGuess As Integer = 2 To 40 'should be to 40
             Dim NormalizedHammingDistance As Integer = HammingDistance(cipherString.Substring(0, lengthGuess), _
                                                                        cipherString.Substring(lengthGuess, lengthGuess)) / lengthGuess
-            If NormalizedHammingDistance < shortestNormalizedDistance1 Then
-                bestLengthGuess1 = lengthGuess
-                shortestNormalizedDistance1 = NormalizedHammingDistance
-            ElseIf NormalizedHammingDistance < shortestNormalizedDistance2 Then
-                bestLengthGuess2 = lengthGuess
-                shortestNormalizedDistance2 = NormalizedHammingDistance
-            ElseIf NormalizedHammingDistance < shortestNormalizedDistance3 Then
-                bestLengthGuess3 = lengthGuess
-                shortestNormalizedDistance3 = NormalizedHammingDistance
-            End If
+            For s As Integer = 0 To 4
+                If NormalizedHammingDistance < shortestNormalizedDistance(s) Then
+                    ' shuffle
+                    For sh As Integer = 4 To s + 1 Step -1
+                        bestLengthGuess(sh) = bestLengthGuess(sh - 1)
+                        shortestNormalizedDistance(sh) = shortestNormalizedDistance(sh - 1)
+                    Next
+                    bestLengthGuess(s) = lengthGuess
+                    shortestNormalizedDistance(s) = NormalizedHammingDistance
+                    Exit For
+                End If
+            Next
         Next
+
         TextBox2.Text = _
-            "L1=" & bestLengthGuess1 & " (" & shortestNormalizedDistance1 & ")" & Environment.NewLine & _
-            "L2=" & bestLengthGuess2 & " (" & shortestNormalizedDistance2 & ")" & Environment.NewLine & _
-            "L3=" & bestLengthGuess3 & " (" & shortestNormalizedDistance3 & ")" & Environment.NewLine
+            "L1=" & bestLengthGuess(0) & " (" & shortestNormalizedDistance(0) & ")" & Environment.NewLine & _
+            "L2=" & bestLengthGuess(1) & " (" & shortestNormalizedDistance(1) & ")" & Environment.NewLine & _
+            "L3=" & bestLengthGuess(2) & " (" & shortestNormalizedDistance(2) & ")" & Environment.NewLine & _
+            "L4=" & bestLengthGuess(3) & " (" & shortestNormalizedDistance(3) & ")" & Environment.NewLine & _
+            "L5=" & bestLengthGuess(4) & " (" & shortestNormalizedDistance(4) & ")" & Environment.NewLine
 
     End Sub
 
@@ -324,7 +357,5 @@
         Next
         singleByteXor = "done" '******* change later to hand results back to main sub
     End Function
-
-
 
 End Class
