@@ -43,6 +43,7 @@ Partial Class Form1
         Me.Label6 = New System.Windows.Forms.Label()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -160,11 +161,11 @@ Partial Class Form1
         'TextBox6
         '
         Me.TextBox6.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox6.Location = New System.Drawing.Point(12, 143)
+        Me.TextBox6.Location = New System.Drawing.Point(12, 220)
         Me.TextBox6.Multiline = True
         Me.TextBox6.Name = "TextBox6"
         Me.TextBox6.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TextBox6.Size = New System.Drawing.Size(678, 96)
+        Me.TextBox6.Size = New System.Drawing.Size(678, 19)
         Me.TextBox6.TabIndex = 13
         '
         'TextBox7
@@ -229,11 +230,21 @@ Partial Class Form1
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.HelpToolStripMenuItem.Text = "Help"
         '
+        'RichTextBox1
+        '
+        Me.RichTextBox1.Location = New System.Drawing.Point(12, 143)
+        Me.RichTextBox1.Name = "RichTextBox1"
+        Me.RichTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical
+        Me.RichTextBox1.Size = New System.Drawing.Size(678, 69)
+        Me.RichTextBox1.TabIndex = 20
+        Me.RichTextBox1.Text = ""
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(706, 542)
+        Me.Controls.Add(Me.RichTextBox1)
         Me.Controls.Add(Me.TextBox8)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Label5)
@@ -283,5 +294,6 @@ Partial Class Form1
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents MenuStrip1 As System.Windows.Forms.MenuStrip
     Friend WithEvents HelpToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents RichTextBox1 As System.Windows.Forms.RichTextBox
 
 End Class

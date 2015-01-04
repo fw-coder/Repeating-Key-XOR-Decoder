@@ -54,10 +54,17 @@
         ' Import strings from text file
         Dim R As New IO.StreamReader(OpenFileDialog1.FileName)
         Dim str As String = R.ReadToEnd() ' Delimiter is vbLF (LineFeed)
-        TextBox6.Text = str ' Put the strings from the imported file into the list box
+        cipherInput.fromFile = System.Text.ASCIIEncoding.ASCII.GetBytes(str)
+
+        RichTextBox1.Text = str ' Put the strings from the imported file into the list box
         R.Close()
 
     End Sub
+    Public Class cipherInput
+
+        Public Shared fromFile() As Byte
+
+    End Class
 
     Private Sub Button1_Click(sender As System.Object, e As System.EventArgs) Handles Button1.Click
         OpenFileDialog1.Title = "Please Select a File"
@@ -73,10 +80,12 @@
         Dim shortestNormalizedDistance1 As Integer = 9999
         Dim shortestNormalizedDistance2 As Integer = 9999
         Dim shortestNormalizedDistance3 As Integer = 9999
+        Dim cipherString As String = System.Text.ASCIIEncoding.ASCII.GetString(cipherInput.fromFile)
 
         ' Find the three keysizes with the shortest hamming distances and write them to textBox2
-        For lengthGuess As Integer = 2 To 40
-            Dim NormalizedHammingDistance As Integer = HammingDistance(TextBox6.Text.Substring(0, lengthGuess), TextBox6.Text.Substring(lengthGuess, lengthGuess)) / lengthGuess
+        For lengthGuess As Integer = 2 To 8 'should be to 40
+            Dim NormalizedHammingDistance As Integer = HammingDistance(cipherString.Substring(0, lengthGuess), _
+                                                                       cipherString.Substring(lengthGuess, lengthGuess)) / lengthGuess
             If NormalizedHammingDistance < shortestNormalizedDistance1 Then
                 bestLengthGuess1 = lengthGuess
                 shortestNormalizedDistance1 = NormalizedHammingDistance
@@ -98,8 +107,8 @@
    
     
     Private Sub Button4_Click(sender As System.Object, e As System.EventArgs) Handles Button4.Click
-        ' Grab text to decrypt
-        Dim cipher As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(TextBox6.Text) ' Convert inputted string into hex byte array
+        ' Grab text to decrypt - use cipherInput.fromFile()
+        ' Dim cipher As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(RichTextBox1.Text)
 
         ' Grab keysize
         Dim keysize As Integer = TextBox7.Text
@@ -121,7 +130,7 @@
         'a2,2 = block 2, char 2 byte 13
         'a2,3 = block 2, char 3 byte 14
         'a2,4 = block 2, char 4 byte 15
-        Dim arrayRow As Integer = (cipher.Length / keysize) - 1 ' 0 to several hundred; each block of cipher on separate row
+        Dim arrayRow As Integer = (cipherInput.fromFile.Length / keysize) - 1 ' 0 to several hundred; each block of cipher on separate row
         Dim arrayCol As Integer = keysize - 1                   ' 0 to keysize (minus 1); each column of bytes in block of cipher
 
         Dim cipherBlocks(,) As Byte = New Byte(arrayRow, arrayCol) {}
@@ -130,9 +139,9 @@
         ' Break text into blocks of size = keysize
         For r As Integer = 0 To arrayRow
             For c As Integer = 0 To arrayCol
-                cipherBlocks(r, c) = cipher(counter)
+                cipherBlocks(r, c) = cipherInput.fromFile(counter)
                 counter = counter + 1
-                If counter >= cipher.Length - 1 Then Exit For
+                If counter >= cipherInput.fromFile.Length Then Exit For
             Next
         Next
 
@@ -142,7 +151,7 @@
         For r2 As Integer = 0 To arrayCol
             For c2 As Integer = 0 To arrayRow
                 cipherBlocksTrans(r2, c2) = cipherBlocks(c2, r2)
-                If counter2 >= cipher.Length - 1 Then Exit For
+                If counter2 >= cipherInput.fromFile.Length - 1 Then Exit For
             Next
         Next
 
@@ -202,6 +211,29 @@
             Dim topScoreResultKey1 As Integer = 0
             Dim topScoreResultKey2 As Integer = 0
             Dim topScoreResultKey3 As Integer = 0
+
+            Dim topScore4 As Single = 999999
+            Dim topScoreResultString4 As String = String.Empty
+            Dim topScoreResultKey4 As Integer = 0
+            Dim topScore5 As Single = 999999
+            Dim topScoreResultString5 As String = String.Empty
+            Dim topScoreResultKey5 As Integer = 0
+            Dim topScore6 As Single = 999999
+            Dim topScoreResultString6 As String = String.Empty
+            Dim topScoreResultKey6 As Integer = 0
+            Dim topScore7 As Single = 999999
+            Dim topScoreResultString7 As String = String.Empty
+            Dim topScoreResultKey7 As Integer = 0
+            Dim topScore8 As Single = 999999
+            Dim topScoreResultString8 As String = String.Empty
+            Dim topScoreResultKey8 As Integer = 0
+            Dim topScore9 As Single = 999999
+            Dim topScoreResultString9 As String = String.Empty
+            Dim topScoreResultKey9 As Integer = 0
+            Dim topScore10 As Single = 999999
+            Dim topScoreResultString10 As String = String.Empty
+            Dim topScoreResultKey10 As Integer = 0
+
             Dim FreqAnalysisData() As String = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", _
                                                 "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", _
                                                 "u", "v", "w", "x", "y", "z"}
@@ -210,18 +242,26 @@
                                                  0.1, 6.0, 6.3, 9.1, 2.8, 1.0, 2.4, 0.15, _
                                                  2.0, 0.07}
 
-            For t As Byte = &H0 To &HFF
+            For t As Byte = &H0 To &HFF  '******** should be &H0 To &HFF 
                 Dim resultString As String = String.Empty ' use to hold string for frequency analysis
                 Dim skipFreqAnalysis As Integer = 0 ' set to 1 if string/key combo has bad characters so freq analysis will be skipped
                 Dim testByte As Byte = t ' we will xor this with each value in the current row
-                For col As Integer = 0 To cipher.GetLength(1) - 1
+                For col As Integer = 0 To cipher.GetLength(1) - 1 '********* should be 0 to cipher....
                     '' Convert each pair of characters to a byte
                     'Dim currentByte1 As String = stringData1.Substring(i, 2) ' currentByte is two hex values
                     Dim value1 As Byte = cipher(row, col) 'value is hex byte
                     Dim tempByte As Byte = value1 Xor testByte
                     ' ************************************************************************************
                     ' Experimenting with turbo-mode - exit loop if character is out of standard text range
-                    ' If tempByte < &H20 Or tempByte > &H7E Then
+                    'If (tempByte >= &HC0) AndAlso (tempByte <= &HF6) Then
+                    '    skipFreqAnalysis = 1
+                    '    ' ******TextBox3.Text = TextBox3.Text & "**GARBAGE**"
+                    '    Exit For
+                    'ElseIf tempByte >= &HF8 Then
+                    '    skipFreqAnalysis = 1
+                    '    ' ******TextBox3.Text = TextBox3.Text & "**GARBAGE**"
+                    '    Exit For
+                    'ElseIf (tempByte >= &H7F) AndAlso (tempByte <= &H8E) Then
                     '    skipFreqAnalysis = 1
                     '    ' ******TextBox3.Text = TextBox3.Text & "**GARBAGE**"
                     '    Exit For
@@ -267,18 +307,22 @@
                     Dim percentOfOccurrences As Single = 9999
                     Dim occurrenceDiff As Single = 0
                     Dim normSum As Single = 0
+                    Dim totalLetterCount As Single = 0
 
                     For letter As Integer = 0 To 25
+                        letterCount = 0
                         For Each c As Char In resultString
                             If c = FreqAnalysisData(letter) Then
                                 letterCount += 1
+                                totalLetterCount += 1
                             End If
                         Next
-                        percentOfOccurrences = letterCount / resultString.Length
+                        percentOfOccurrences = (letterCount / resultString.Length) * 100
                         occurrenceDiff = occurrenceDiff + Math.Pow((percentOfOccurrences - FreqAnalysisScore(letter)), 2)
                     Next
 
                     normSum = Math.Sqrt(occurrenceDiff / 26)
+                    'If totalLetterCount >= resultString.Length * 0.1 Then ' if at least 80% of string aren't alpha chars
 
                     If normSum < topScore1 Then
                         topScore1 = normSum
@@ -292,7 +336,36 @@
                         topScore3 = normSum
                         topScoreResultString3 = resultString
                         topScoreResultKey3 = t
+                    ElseIf normSum < topScore4 Then
+                        topScore4 = normSum
+                        topScoreResultString4 = resultString
+                        topScoreResultKey4 = t
+                    ElseIf normSum < topScore5 Then
+                        topScore5 = normSum
+                        topScoreResultString5 = resultString
+                        topScoreResultKey5 = t
+                    ElseIf normSum < topScore6 Then
+                        topScore6 = normSum
+                        topScoreResultString6 = resultString
+                        topScoreResultKey6 = t
+                    ElseIf normSum < topScore7 Then
+                        topScore7 = normSum
+                        topScoreResultString7 = resultString
+                        topScoreResultKey7 = t
+                    ElseIf normSum < topScore8 Then
+                        topScore8 = normSum
+                        topScoreResultString8 = resultString
+                        topScoreResultKey8 = t
+                    ElseIf normSum < topScore9 Then
+                        topScore9 = normSum
+                        topScoreResultString9 = resultString
+                        topScoreResultKey9 = t
+                    ElseIf normSum < topScore10 Then
+                        topScore10 = normSum
+                        topScoreResultString10 = resultString
+                        topScoreResultKey10 = t
                     End If
+                    'End If
 
                 End If
                 If t = &HFF Then Exit For 'fix bug where system gives overflow after last loop where t is temporarily &hff+1
@@ -303,7 +376,21 @@
                 row & "^" & "code: " & "^" & topScoreResultString2 & "^" & " Key: " & "^" & Chr(topScoreResultKey2) & _
                 "^" & " Score: " & "^" & topScore2 & Environment.NewLine & _
                 row & "^" & "code: " & "^" & topScoreResultString3 & "^" & " Key: " & "^" & Chr(topScoreResultKey3) & _
-                "^" & " Score: " & "^" & topScore3
+                "^" & " Score: " & "^" & topScore3 & Environment.NewLine & _
+                row & "^" & "code: " & "^" & topScoreResultString4 & "^" & " Key: " & "^" & Chr(topScoreResultKey4) & _
+                "^" & " Score: " & "^" & topScore4 & Environment.NewLine & _
+                row & "^" & "code: " & "^" & topScoreResultString5 & "^" & " Key: " & "^" & Chr(topScoreResultKey5) & _
+                "^" & " Score: " & "^" & topScore5 & Environment.NewLine & _
+                row & "^" & "code: " & "^" & topScoreResultString6 & "^" & " Key: " & "^" & Chr(topScoreResultKey6) & _
+                "^" & " Score: " & "^" & topScore6 & Environment.NewLine & _
+                row & "^" & "code: " & "^" & topScoreResultString7 & "^" & " Key: " & "^" & Chr(topScoreResultKey7) & _
+                "^" & " Score: " & "^" & topScore7 & Environment.NewLine & _
+                row & "^" & "code: " & "^" & topScoreResultString8 & "^" & " Key: " & "^" & Chr(topScoreResultKey8) & _
+                "^" & " Score: " & "^" & topScore8 & Environment.NewLine & _
+                row & "^" & "code: " & "^" & topScoreResultString9 & "^" & " Key: " & "^" & Chr(topScoreResultKey9) & _
+                "^" & " Score: " & "^" & topScore9 & Environment.NewLine & _
+                row & "^" & "code: " & "^" & topScoreResultString10 & "^" & " Key: " & "^" & Chr(topScoreResultKey10) & _
+                "^" & " Score: " & "^" & topScore10
         Next
         singleByteXor = "done" '******* change later to hand results back to main sub
     End Function
