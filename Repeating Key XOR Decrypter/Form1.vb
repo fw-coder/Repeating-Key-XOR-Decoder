@@ -202,38 +202,9 @@
     Private Function singleByteXor(cipher(,) As Byte) As String
         
         For row As Integer = 0 To cipher.GetLength(0) - 1
-            Dim topScore1 As Single = 999999
-            Dim topScore2 As Single = 999999
-            Dim topScore3 As Single = 999999
-            Dim topScoreResultString1 As String = String.Empty
-            Dim topScoreResultString2 As String = String.Empty
-            Dim topScoreResultString3 As String = String.Empty
-            Dim topScoreResultKey1 As Integer = 0
-            Dim topScoreResultKey2 As Integer = 0
-            Dim topScoreResultKey3 As Integer = 0
-
-            Dim topScore4 As Single = 999999
-            Dim topScoreResultString4 As String = String.Empty
-            Dim topScoreResultKey4 As Integer = 0
-            Dim topScore5 As Single = 999999
-            Dim topScoreResultString5 As String = String.Empty
-            Dim topScoreResultKey5 As Integer = 0
-            Dim topScore6 As Single = 999999
-            Dim topScoreResultString6 As String = String.Empty
-            Dim topScoreResultKey6 As Integer = 0
-            Dim topScore7 As Single = 999999
-            Dim topScoreResultString7 As String = String.Empty
-            Dim topScoreResultKey7 As Integer = 0
-            Dim topScore8 As Single = 999999
-            Dim topScoreResultString8 As String = String.Empty
-            Dim topScoreResultKey8 As Integer = 0
-            Dim topScore9 As Single = 999999
-            Dim topScoreResultString9 As String = String.Empty
-            Dim topScoreResultKey9 As Integer = 0
-            Dim topScore10 As Single = 999999
-            Dim topScoreResultString10 As String = String.Empty
-            Dim topScoreResultKey10 As Integer = 0
-
+            Dim lowScore() As Single = {999999, 999999, 999999, 999999, 999999, 999999, 999999, 999999, 999999, 999999}
+            Dim lowScoreResultString(10) As String
+            Dim lowScoreResultKey() As Integer = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
             Dim FreqAnalysisData() As String = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", _
                                                 "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", _
                                                 "u", "v", "w", "x", "y", "z"}
@@ -324,75 +295,36 @@
                     normSum = Math.Sqrt(occurrenceDiff / 26)
                     'If totalLetterCount >= resultString.Length * 0.1 Then ' if at least 80% of string aren't alpha chars
 
-                    If normSum < topScore1 Then
-                        topScore1 = normSum
-                        topScoreResultString1 = resultString
-                        topScoreResultKey1 = t
-                    ElseIf normSum < topScore2 Then
-                        topScore2 = normSum
-                        topScoreResultString2 = resultString
-                        topScoreResultKey2 = t
-                    ElseIf normSum < topScore3 Then
-                        topScore3 = normSum
-                        topScoreResultString3 = resultString
-                        topScoreResultKey3 = t
-                    ElseIf normSum < topScore4 Then
-                        topScore4 = normSum
-                        topScoreResultString4 = resultString
-                        topScoreResultKey4 = t
-                    ElseIf normSum < topScore5 Then
-                        topScore5 = normSum
-                        topScoreResultString5 = resultString
-                        topScoreResultKey5 = t
-                    ElseIf normSum < topScore6 Then
-                        topScore6 = normSum
-                        topScoreResultString6 = resultString
-                        topScoreResultKey6 = t
-                    ElseIf normSum < topScore7 Then
-                        topScore7 = normSum
-                        topScoreResultString7 = resultString
-                        topScoreResultKey7 = t
-                    ElseIf normSum < topScore8 Then
-                        topScore8 = normSum
-                        topScoreResultString8 = resultString
-                        topScoreResultKey8 = t
-                    ElseIf normSum < topScore9 Then
-                        topScore9 = normSum
-                        topScoreResultString9 = resultString
-                        topScoreResultKey9 = t
-                    ElseIf normSum < topScore10 Then
-                        topScore10 = normSum
-                        topScoreResultString10 = resultString
-                        topScoreResultKey10 = t
-                    End If
+                    For s As Integer = 0 To 9
+                        If normSum < lowScore(s) Then
+                            ' shuffle
+                            For sh As Integer = 9 To s + 1 Step -1
+                                lowScore(sh) = lowScore(sh - 1)
+                                lowScoreResultString(sh) = lowScoreResultString(sh - 1)
+                                lowScoreResultKey(sh) = lowScoreResultKey(sh - 1)
+                            Next
+                            lowScore(s) = normSum
+                            lowScoreResultString(s) = resultString
+                            lowScoreResultKey(s) = t
+                            Exit For
+                        End If
+                    Next
                     'End If
 
                 End If
                 If t = &HFF Then Exit For 'fix bug where system gives overflow after last loop where t is temporarily &hff+1
             Next
-            TextBox8.Text = TextBox8.Text & Environment.NewLine & _
-                row & "^" & "code: " & "^" & topScoreResultString1 & "^" & " Key: " & "^" & Chr(topScoreResultKey1) & _
-                "^" & " Score: " & "^" & topScore1 & Environment.NewLine & _
-                row & "^" & "code: " & "^" & topScoreResultString2 & "^" & " Key: " & "^" & Chr(topScoreResultKey2) & _
-                "^" & " Score: " & "^" & topScore2 & Environment.NewLine & _
-                row & "^" & "code: " & "^" & topScoreResultString3 & "^" & " Key: " & "^" & Chr(topScoreResultKey3) & _
-                "^" & " Score: " & "^" & topScore3 & Environment.NewLine & _
-                row & "^" & "code: " & "^" & topScoreResultString4 & "^" & " Key: " & "^" & Chr(topScoreResultKey4) & _
-                "^" & " Score: " & "^" & topScore4 & Environment.NewLine & _
-                row & "^" & "code: " & "^" & topScoreResultString5 & "^" & " Key: " & "^" & Chr(topScoreResultKey5) & _
-                "^" & " Score: " & "^" & topScore5 & Environment.NewLine & _
-                row & "^" & "code: " & "^" & topScoreResultString6 & "^" & " Key: " & "^" & Chr(topScoreResultKey6) & _
-                "^" & " Score: " & "^" & topScore6 & Environment.NewLine & _
-                row & "^" & "code: " & "^" & topScoreResultString7 & "^" & " Key: " & "^" & Chr(topScoreResultKey7) & _
-                "^" & " Score: " & "^" & topScore7 & Environment.NewLine & _
-                row & "^" & "code: " & "^" & topScoreResultString8 & "^" & " Key: " & "^" & Chr(topScoreResultKey8) & _
-                "^" & " Score: " & "^" & topScore8 & Environment.NewLine & _
-                row & "^" & "code: " & "^" & topScoreResultString9 & "^" & " Key: " & "^" & Chr(topScoreResultKey9) & _
-                "^" & " Score: " & "^" & topScore9 & Environment.NewLine & _
-                row & "^" & "code: " & "^" & topScoreResultString10 & "^" & " Key: " & "^" & Chr(topScoreResultKey10) & _
-                "^" & " Score: " & "^" & topScore10
+
+            For b As Integer = 0 To 9
+                TextBox8.Text = TextBox8.Text & _
+                row & "^" & "code: " & "^" & lowScoreResultString(b) & "^" & " Key: " & "^" & Chr(lowScoreResultKey(b)) & _
+                "^" & " Score: " & "^" & lowScore(b) & Environment.NewLine
+            Next
+
         Next
         singleByteXor = "done" '******* change later to hand results back to main sub
     End Function
+
+
 
 End Class
