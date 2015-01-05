@@ -46,6 +46,11 @@ Partial Class Form1
         Me.Button5 = New System.Windows.Forms.Button()
         Me.TextBox6 = New System.Windows.Forms.TextBox()
         Me.OpenFileDialog2 = New System.Windows.Forms.OpenFileDialog()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.Button6 = New System.Windows.Forms.Button()
+        Me.TextBox10 = New System.Windows.Forms.TextBox()
+        Me.RichTextBox2 = New System.Windows.Forms.RichTextBox()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -82,7 +87,7 @@ Partial Class Form1
         'Button2
         '
         Me.Button2.BackColor = System.Drawing.Color.Lime
-        Me.Button2.Location = New System.Drawing.Point(629, 60)
+        Me.Button2.Location = New System.Drawing.Point(622, 60)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(68, 52)
         Me.Button2.TabIndex = 3
@@ -92,7 +97,7 @@ Partial Class Form1
         'TextBox2
         '
         Me.TextBox2.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox2.Location = New System.Drawing.Point(12, 264)
+        Me.TextBox2.Location = New System.Drawing.Point(12, 244)
         Me.TextBox2.Multiline = True
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
@@ -103,7 +108,7 @@ Partial Class Form1
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(12, 246)
+        Me.Label2.Location = New System.Drawing.Point(12, 226)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(124, 15)
         Me.Label2.TabIndex = 5
@@ -154,7 +159,7 @@ Partial Class Form1
         '
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(12, 150)
+        Me.Label4.Location = New System.Drawing.Point(12, 145)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(95, 15)
         Me.Label4.TabIndex = 12
@@ -162,7 +167,7 @@ Partial Class Form1
         '
         'TextBox7
         '
-        Me.TextBox7.Location = New System.Drawing.Point(209, 336)
+        Me.TextBox7.Location = New System.Drawing.Point(481, 316)
         Me.TextBox7.Name = "TextBox7"
         Me.TextBox7.Size = New System.Drawing.Size(68, 20)
         Me.TextBox7.TabIndex = 14
@@ -170,18 +175,18 @@ Partial Class Form1
         'Button4
         '
         Me.Button4.BackColor = System.Drawing.Color.Lime
-        Me.Button4.Location = New System.Drawing.Point(310, 335)
+        Me.Button4.Location = New System.Drawing.Point(584, 315)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(106, 23)
         Me.Button4.TabIndex = 15
-        Me.Button4.Text = "Decrypt"
+        Me.Button4.Text = "Find keys"
         Me.Button4.UseVisualStyleBackColor = False
         '
         'Label5
         '
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(12, 339)
+        Me.Label5.Location = New System.Drawing.Point(284, 319)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(194, 15)
         Me.Label5.TabIndex = 16
@@ -190,18 +195,18 @@ Partial Class Form1
         'TextBox8
         '
         Me.TextBox8.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox8.Location = New System.Drawing.Point(12, 382)
+        Me.TextBox8.Location = New System.Drawing.Point(12, 347)
         Me.TextBox8.Multiline = True
         Me.TextBox8.Name = "TextBox8"
         Me.TextBox8.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TextBox8.Size = New System.Drawing.Size(678, 132)
+        Me.TextBox8.Size = New System.Drawing.Size(678, 82)
         Me.TextBox8.TabIndex = 18
         '
         'Label6
         '
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(12, 364)
+        Me.Label6.Location = New System.Drawing.Point(12, 329)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(98, 15)
         Me.Label6.TabIndex = 17
@@ -224,10 +229,10 @@ Partial Class Form1
         '
         'RichTextBox1
         '
-        Me.RichTextBox1.Location = New System.Drawing.Point(12, 168)
+        Me.RichTextBox1.Location = New System.Drawing.Point(12, 163)
         Me.RichTextBox1.Name = "RichTextBox1"
         Me.RichTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical
-        Me.RichTextBox1.Size = New System.Drawing.Size(678, 69)
+        Me.RichTextBox1.Size = New System.Drawing.Size(678, 60)
         Me.RichTextBox1.TabIndex = 20
         Me.RichTextBox1.Text = ""
         '
@@ -251,11 +256,62 @@ Partial Class Form1
         '
         Me.OpenFileDialog2.FileName = "OpenFileDialog1"
         '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(12, 459)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(102, 15)
+        Me.Label7.TabIndex = 26
+        Me.Label7.Text = "Decrypted text:"
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(12, 439)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(30, 15)
+        Me.Label8.TabIndex = 25
+        Me.Label8.Text = "Key:"
+        '
+        'Button6
+        '
+        Me.Button6.BackColor = System.Drawing.Color.Lime
+        Me.Button6.Location = New System.Drawing.Point(584, 435)
+        Me.Button6.Name = "Button6"
+        Me.Button6.Size = New System.Drawing.Size(106, 23)
+        Me.Button6.TabIndex = 24
+        Me.Button6.Text = "Decrypt"
+        Me.Button6.UseVisualStyleBackColor = False
+        '
+        'TextBox10
+        '
+        Me.TextBox10.Location = New System.Drawing.Point(48, 436)
+        Me.TextBox10.Name = "TextBox10"
+        Me.TextBox10.Size = New System.Drawing.Size(530, 20)
+        Me.TextBox10.TabIndex = 23
+        '
+        'RichTextBox2
+        '
+        Me.RichTextBox2.Location = New System.Drawing.Point(12, 477)
+        Me.RichTextBox2.Name = "RichTextBox2"
+        Me.RichTextBox2.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical
+        Me.RichTextBox2.Size = New System.Drawing.Size(678, 132)
+        Me.RichTextBox2.TabIndex = 27
+        Me.RichTextBox2.Text = ""
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(706, 542)
+        Me.ClientSize = New System.Drawing.Size(706, 621)
+        Me.Controls.Add(Me.RichTextBox2)
+        Me.Controls.Add(Me.Label7)
+        Me.Controls.Add(Me.Label8)
+        Me.Controls.Add(Me.Button6)
+        Me.Controls.Add(Me.TextBox10)
         Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.TextBox6)
         Me.Controls.Add(Me.RichTextBox1)
@@ -310,5 +366,10 @@ Partial Class Form1
     Friend WithEvents Button5 As System.Windows.Forms.Button
     Friend WithEvents TextBox6 As System.Windows.Forms.TextBox
     Friend WithEvents OpenFileDialog2 As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents Button6 As System.Windows.Forms.Button
+    Friend WithEvents TextBox10 As System.Windows.Forms.TextBox
+    Friend WithEvents RichTextBox2 As System.Windows.Forms.RichTextBox
 
 End Class

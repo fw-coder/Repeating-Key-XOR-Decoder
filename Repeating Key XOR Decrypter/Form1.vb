@@ -107,22 +107,28 @@
 
     Private Sub Button2_Click(sender As System.Object, e As System.EventArgs) Handles Button2.Click
         Dim bestLengthGuess() As Integer = {0, 0, 0, 0, 0}
-        Dim shortestNormalizedDistance() As Integer = {9999, 9999, 9999, 9999, 9999}
+        Dim shortestNormalizedDistance() As Single = {9999, 9999, 9999, 9999, 9999}
         Dim cipherString As String = System.Text.ASCIIEncoding.ASCII.GetString(cipherInput.fromFile)
 
         ' Find the three keysizes with the shortest hamming distances and write them to textBox2
-        For lengthGuess As Integer = 2 To 40 'should be to 40
-            Dim NormalizedHammingDistance As Integer = HammingDistance(cipherString.Substring(0, lengthGuess), _
-                                                                       cipherString.Substring(lengthGuess, lengthGuess)) / lengthGuess
+        For lengthGuess As Integer = 20 To 60 'should be 2 to 40
+            Dim NormalizedHammingDistance As Single = 0
+            Dim loops As Integer = (cipherString.Length - (lengthGuess * 2)) + 1
+            For i As Integer = 1 To loops
+                NormalizedHammingDistance = NormalizedHammingDistance + _
+                    HammingDistance(cipherString.Substring(0, lengthGuess), _
+                    cipherString.Substring(lengthGuess, lengthGuess)) / lengthGuess
+            Next
+            Dim aveNHD As Single = NormalizedHammingDistance / loops
             For s As Integer = 0 To 4
-                If NormalizedHammingDistance < shortestNormalizedDistance(s) Then
+                If aveNHD < shortestNormalizedDistance(s) Then
                     ' shuffle
                     For sh As Integer = 4 To s + 1 Step -1
                         bestLengthGuess(sh) = bestLengthGuess(sh - 1)
                         shortestNormalizedDistance(sh) = shortestNormalizedDistance(sh - 1)
                     Next
                     bestLengthGuess(s) = lengthGuess
-                    shortestNormalizedDistance(s) = NormalizedHammingDistance
+                    shortestNormalizedDistance(s) = aveNHD
                     Exit For
                 End If
             Next
@@ -358,4 +364,28 @@
         singleByteXor = "done" '******* change later to hand results back to main sub
     End Function
 
+    Private Sub Button6_Click(sender As System.Object, e As System.EventArgs) Handles Button6.Click
+        ' Getting repeating key and text to encrypt
+        Dim key As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(TextBox10.Text)
+        'Dim txt As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(RichTextBox1.Text)
+        Dim fileOut(cipherInput.fromFile.Length) As Byte
+
+        Dim counter As Integer = 0
+
+        For i As Integer = 0 To cipherInput.fromFile.Length - 1 Step key.Length
+            For j As Integer = 0 To key.Length - 1
+                Dim out As Byte = cipherInput.fromFile(counter) Xor key(j)
+                fileOut(counter) = out
+
+                If out < &H10 Then
+                    'RichTextBox2.Text = RichTextBox2.Text & "0" & Convert.ToString(out, 16) 'add leading 0 to first byte
+                Else
+                    'RichTextBox2.Text = RichTextBox2.Text & Convert.ToString(out, 16)
+                End If
+                counter = counter + 1
+                If counter = cipherInput.fromFile.Length Then Exit For
+            Next
+        Next
+        RichTextBox2.Text = System.Text.ASCIIEncoding.ASCII.GetString(fileOut)
+    End Sub
 End Class
