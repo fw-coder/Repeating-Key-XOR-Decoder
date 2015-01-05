@@ -51,6 +51,8 @@ Partial Class Form1
         Me.Button6 = New System.Windows.Forms.Button()
         Me.TextBox10 = New System.Windows.Forms.TextBox()
         Me.RichTextBox2 = New System.Windows.Forms.RichTextBox()
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.ProgressBar2 = New System.Windows.Forms.ProgressBar()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -101,7 +103,7 @@ Partial Class Form1
         Me.TextBox2.Multiline = True
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TextBox2.Size = New System.Drawing.Size(678, 66)
+        Me.TextBox2.Size = New System.Drawing.Size(678, 62)
         Me.TextBox2.TabIndex = 4
         '
         'Label2
@@ -167,7 +169,7 @@ Partial Class Form1
         '
         'TextBox7
         '
-        Me.TextBox7.Location = New System.Drawing.Point(481, 316)
+        Me.TextBox7.Location = New System.Drawing.Point(481, 310)
         Me.TextBox7.Name = "TextBox7"
         Me.TextBox7.Size = New System.Drawing.Size(68, 20)
         Me.TextBox7.TabIndex = 14
@@ -175,7 +177,7 @@ Partial Class Form1
         'Button4
         '
         Me.Button4.BackColor = System.Drawing.Color.Lime
-        Me.Button4.Location = New System.Drawing.Point(584, 315)
+        Me.Button4.Location = New System.Drawing.Point(584, 309)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(106, 23)
         Me.Button4.TabIndex = 15
@@ -186,7 +188,7 @@ Partial Class Form1
         '
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(284, 319)
+        Me.Label5.Location = New System.Drawing.Point(284, 313)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(194, 15)
         Me.Label5.TabIndex = 16
@@ -302,11 +304,31 @@ Partial Class Form1
         Me.RichTextBox2.TabIndex = 27
         Me.RichTextBox2.Text = ""
         '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(142, 228)
+        Me.ProgressBar1.Maximum = 160
+        Me.ProgressBar1.Minimum = 2
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(548, 10)
+        Me.ProgressBar1.TabIndex = 28
+        Me.ProgressBar1.Value = 2
+        '
+        'ProgressBar2
+        '
+        Me.ProgressBar2.Location = New System.Drawing.Point(142, 334)
+        Me.ProgressBar2.Maximum = 255
+        Me.ProgressBar2.Name = "ProgressBar2"
+        Me.ProgressBar2.Size = New System.Drawing.Size(548, 10)
+        Me.ProgressBar2.TabIndex = 29
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(706, 621)
+        Me.Controls.Add(Me.ProgressBar2)
+        Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.RichTextBox2)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.Label8)
@@ -371,5 +393,7 @@ Partial Class Form1
     Friend WithEvents Button6 As System.Windows.Forms.Button
     Friend WithEvents TextBox10 As System.Windows.Forms.TextBox
     Friend WithEvents RichTextBox2 As System.Windows.Forms.RichTextBox
+    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
+    Friend WithEvents ProgressBar2 As System.Windows.Forms.ProgressBar
 
 End Class

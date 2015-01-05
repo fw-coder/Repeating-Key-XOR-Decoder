@@ -1,7 +1,7 @@
 ﻿Public Class Form1
 
     Private Sub Button3_Click(sender As System.Object, e As System.EventArgs) Handles Button3.Click
-        ''TextBox5.Text = HammingDistance(TextBox3.Text, TextBox4.Text).ToString ' write hamming distance to result box
+        TextBox5.Text = HammingDistance(TextBox3.Text, TextBox4.Text).ToString ' write hamming distance to result box
     End Sub
 
     Private Function HammingDistance(inTxt1 As String, inTxt2 As String) As Integer
@@ -111,9 +111,10 @@
         Dim cipherString As String = System.Text.ASCIIEncoding.ASCII.GetString(cipherInput.fromFile)
 
         ' Find the three keysizes with the shortest hamming distances and write them to textBox2
-        For lengthGuess As Integer = 20 To 60 'should be 2 to 40
+        For lengthGuess As Integer = 2 To 160 'should be 2 to 40
             Dim NormalizedHammingDistance As Single = 0
             Dim loops As Integer = (cipherString.Length - (lengthGuess * 2)) + 1
+            ProgressBar1.Value = lengthGuess
             For i As Integer = 1 To loops
                 NormalizedHammingDistance = NormalizedHammingDistance + _
                     HammingDistance(cipherString.Substring(0, lengthGuess), _
@@ -172,11 +173,13 @@
         Dim arrayRow As Integer = (cipherInput.fromFile.Length / keysize) - 1 ' 0 to several hundred; each block of cipher on separate row
         Dim arrayCol As Integer = keysize - 1                   ' 0 to keysize (minus 1); each column of bytes in block of cipher
 
+
         Dim cipherBlocks(,) As Byte = New Byte(arrayRow, arrayCol) {}
         Dim counter As Integer = 0
         ' keep a counter going while creating 2d array & if counter >= #items in cipher, then stop or add empty values
         ' Break text into blocks of size = keysize
         For r As Integer = 0 To arrayRow
+
             For c As Integer = 0 To arrayCol
                 cipherBlocks(r, c) = cipherInput.fromFile(counter)
                 counter = counter + 1
@@ -188,6 +191,7 @@
         Dim cipherBlocksTrans(,) As Byte = New Byte(arrayCol, arrayRow) {}
         Dim counter2 As Integer = 0
         For r2 As Integer = 0 To arrayCol
+
             For c2 As Integer = 0 To arrayRow
                 cipherBlocksTrans(r2, c2) = cipherBlocks(c2, r2)
                 If counter2 >= cipherInput.fromFile.Length - 1 Then Exit For
@@ -251,7 +255,8 @@
                                                  7.0, 0.15, 0.8, 4.0, 2.4, 6.7, 7.5, 1.9, _
                                                  0.1, 6.0, 6.3, 9.1, 2.8, 1.0, 2.4, 0.15, _
                                                  2.0, 0.07}
-
+            ProgressBar2.Maximum = cipher.GetLength(0) - 1
+            ProgressBar2.Value = row
             For t As Byte = &H0 To &HFF  '******** should be &H0 To &HFF 
                 Dim resultString As String = String.Empty ' use to hold string for frequency analysis
                 Dim skipFreqAnalysis As Integer = 0 ' set to 1 if string/key combo has bad characters so freq analysis will be skipped
@@ -367,21 +372,13 @@
     Private Sub Button6_Click(sender As System.Object, e As System.EventArgs) Handles Button6.Click
         ' Getting repeating key and text to encrypt
         Dim key As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(TextBox10.Text)
-        'Dim txt As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(RichTextBox1.Text)
         Dim fileOut(cipherInput.fromFile.Length) As Byte
-
         Dim counter As Integer = 0
 
         For i As Integer = 0 To cipherInput.fromFile.Length - 1 Step key.Length
             For j As Integer = 0 To key.Length - 1
                 Dim out As Byte = cipherInput.fromFile(counter) Xor key(j)
                 fileOut(counter) = out
-
-                If out < &H10 Then
-                    'RichTextBox2.Text = RichTextBox2.Text & "0" & Convert.ToString(out, 16) 'add leading 0 to first byte
-                Else
-                    'RichTextBox2.Text = RichTextBox2.Text & Convert.ToString(out, 16)
-                End If
                 counter = counter + 1
                 If counter = cipherInput.fromFile.Length Then Exit For
             Next
